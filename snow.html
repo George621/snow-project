@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+    <style>
+        h3,
+        h4,
+        ul,
+        input {
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            background-color: #EEE;
+        }
+        
+        .contain {
+            width: 1226px;
+            margin: 0 auto;
+        }
+        
+        .search-bar {
+            background-color: #444;
+            color: #FFF;
+        }
+        
+        .top-bar {
+            height: 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .search-input {
+            height: 30px;
+            background-color: #FFF;
+            border-radius: 5px;
+            width: 400px;
+            font-size: 18px;
+            padding: 0 8px;
+        }
+        
+        ul {
+            list-style: none;
+        }
+        
+        .doing-box,
+        .finshed-box {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 60px;
+        }
+        
+        .somethings {
+            background-color: #FFF;
+            border-left: 5px solid green;
+            border-radius: 5px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            height: 30px;
+            margin-bottom: 5px;
+        }
+        
+        input[type="checkbox"] {
+            margin: 0 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="search-bar">
+            <div class="top-bar contain">
+                <h3>ToDoList</h3>
+                <input class="search-input" type="text" placeholder="添加ToDo" id="J_search">
+            </div>
+        </div>
+        <div class="main contain">
+            <div class="doing-box">
+                <h4>正在进行</h4>
+                <span id="J_doingnum">0</span>
+            </div>
+            <ul id="J_doing" class="doing"></ul>
+            <div class="finshed-box">
+                <h4>已经完成</h4>
+                <span id="J_finshednum">0</span>
+            </div>
+            <ul id="J_finshed" class="finished"></ul>
+        </div>
+    </div>
+</body>
+<script>
+    var ToDoList = {
+        init: function() {
+            var slef = this;
+            this.eventBind();
+            $('#J_search').on('keydown', function(event) {
+                var val = event.target.value;
+                if (event.keyCode === 13) {
+                    slef.addDoing(val);
+                }
+            })
+        },
+        addDoing: function(v) {
+            $('#J_doing').append('<li class="somethings"><input type="checkbox"><span class="content">' + v + '</span></li>');
+            var num = $('#J_doing li').length;
+            $('#J_doingnum').text(num);
+        },
+        eventBind: function() {
+            var slef = this;
+            $('#J_doing').on('change', 'input', function() {
+                slef.addToFinsh();
+            })
+        },
+        addToFinsh: function() {
+            $('#J_doing input:checked').parent().clone().appendTo($('#J_finshed'));
+            $('#J_doing input:checked').parent().remove();
+            var num = $('#J_doing li').length;
+            $('#J_doingnum').text(num);
+            var numf = $('#J_finshed li').length;
+            $('#J_finshednum').text(numf);
+        },
+    }
+    ToDoList.init();
+</script>
+
+</html>
